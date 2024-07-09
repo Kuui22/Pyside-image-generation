@@ -10,11 +10,13 @@ class MainWindow(QMainWindow):
         self._ui = Ui_MainWindow()
         self._ui.setupUi(self) 
         self._ui.okButton.clicked.connect(self.say_hello)
+        self._ui.actionExit.triggered.connect(self.close)
 
     @Slot()
     def say_hello(self):
         text = self._ui.promptText.toPlainText()
         print(text)
+        
 
 
 
