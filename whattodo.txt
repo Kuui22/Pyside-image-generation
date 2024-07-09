@@ -1,0 +1,3 @@
+pyside6-project new-ui main
+pyside6-project build main
+pyside6-project run main
