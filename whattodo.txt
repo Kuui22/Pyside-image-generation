@@ -1,3 +1,11 @@
+Create project
+
 pyside6-project new-ui main
 pyside6-project build main
 pyside6-project run main
+
+
+Designer
+
+pyside6-designer
+pyside6-uic mainwindow.ui -o ui_mainwindow.py
