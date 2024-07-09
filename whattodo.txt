@@ -1,3 +1,8 @@
+imports
+
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118   
+the rest is understandable from requirements
+
 Create project
 
 pyside6-project new-ui main
