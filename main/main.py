@@ -19,6 +19,7 @@ def FlushPipe(pipe,image=None):
         del image
         gc.collect()
         torch.cuda.empty_cache()
+        gc.collect()
     except Exception as e:
         print(f"Failed to clear: {e}")
         
@@ -41,20 +42,21 @@ def SaveImage(image,prompt):
     except Exception as e:
         print(f"Error saving: {e}")
 
-def GenerateImage(prompt):
+def GenerateImage(prompt,negative_prompt="",height=512,width=512,guidance_scale=7.0,num_inference_steps=35):
     try:
         pipe:StableDiffusionPipeline = StableDiffusionPipeline.from_pretrained(localmodel, torch_dtype=torch.float16, safety_checker=None)
         pipe.enable_model_cpu_offload()
     except Exception as e:
         print(f"Error setting model: {e}")
     try:
+        print(f"Generating image: Prompt={prompt} \n Height/Width={height}/{width} \n Guidance scale/Steps={guidance_scale}/{num_inference_steps}" )
         image:Image = pipe(
             prompt,
-            negative_prompt="",
-            num_inference_steps=56,
-            guidance_scale=7.0,
-            height=512,
-            width=512,
+            negative_prompt=negative_prompt,
+            num_inference_steps=num_inference_steps,
+            guidance_scale=guidance_scale,
+            height=height,
+            width=width,
         ).images[0]   
         SaveImage(image,prompt)
         FlushPipe(pipe,image)
@@ -73,12 +75,17 @@ class MainWindow(QMainWindow):
 
     @Slot()
     def ExecutePrompt(self):
-        text:str = self._ui.promptText.toPlainText()
-        if(text):
-            GenerateImage(text)
+        prompt:str = self._ui.promptText.toPlainText()
+        negativeprompt:str = ""
+        height:int = int(self._ui.heightBox.currentText())
+        width:int = int(self._ui.widthBox.currentText())
+        guidance_scale:float = float(self._ui.editGuidance.text())
+        num_inference_steps:int = int(self._ui.editInference.text())
+        if(prompt):
+            GenerateImage(prompt,negativeprompt,height,width,guidance_scale,num_inference_steps)
             print("Done!")
         else:
-            print("No text found")
+            print("No prompt found")
         
 
 
