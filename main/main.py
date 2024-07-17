@@ -49,7 +49,7 @@ def SaveImage(image,prompt):
     except Exception as e:
         print(f"Error saving: {e}")
 
-async def GenerateImage(prompt,negative_prompt="",height=512,width=512,guidance_scale=7.0,num_inference_steps=35,button=None):
+def GenerateImage(prompt,negative_prompt="",height=512,width=512,guidance_scale=7.0,num_inference_steps=35,button=None):
     try:
         button.setEnabled(False)
         pipe:StableDiffusionPipeline = StableDiffusionPipeline.from_pretrained(localmodel, torch_dtype=torch.float16, safety_checker=None)
@@ -72,7 +72,6 @@ async def GenerateImage(prompt,negative_prompt="",height=512,width=512,guidance_
     except Exception as e:
         print(f"Error generating: {e}")
         
-
 
 class MainWindow(QMainWindow):
     def __init__(self):
